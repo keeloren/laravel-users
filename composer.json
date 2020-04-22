@@ -1,0 +1,39 @@
+{
+    "name": "nguyennd/laravel-users",
+    "description": "A package which provides API manager users",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Nguyen Duy Nguyen",
+            "email": "nguyennd@greenglobal.vn"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^7.2.5",
+        "laravel/passport": "^8.4",
+        "laravel/framework": "^7.0",
+        "laravel/ui": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "NguyenND\\Users\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "NguyenND\\Users\\Providers\\UserServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ],
+        "post-root-package-install": [
+            "@php artisan migrate --path=vendor/laravel/ui/stubs/migrations/"
+        ]
+    }
+}
