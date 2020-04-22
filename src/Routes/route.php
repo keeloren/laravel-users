@@ -4,6 +4,7 @@ Route::group(['prefix' => 'api/users'], function () {
     Route::group(['namespace' => 'NguyenND\Users\Http\Controllers'], function () {
 //        Route::get('/laravel-user', 'AuthController@index');
         Route::post('register', 'AuthController@register');
+        Route::post('oauth/token', 'AccessTokenController@issueToken');
         Route::group(['middleware' => 'auth:api'], function () {
             Route::get('me', 'AuthController@authenticated');
         });

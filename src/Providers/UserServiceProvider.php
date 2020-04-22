@@ -2,10 +2,14 @@
 
 namespace NguyenND\Users\Providers;
 
+use NguyenND\Users\Exceptions\HandlerException;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as AuthServiceProvider;
 use Laravel\Passport\Passport;
+use NguyenND\Users\Repositories\Contracts\UserRepository;
+use NguyenND\Users\Repositories\Eloquent\UserRepositoryEloquent;
 use NguyenND\Users\Models\User;
 use Config;
+use Illuminate\Contracts\Debug\ExceptionHandler;
 
 class UserServiceProvider extends AuthServiceProvider
 {
@@ -45,6 +49,12 @@ class UserServiceProvider extends AuthServiceProvider
         Passport::routes();
         Passport::tokensExpireIn(now()->addDays(config('constants.TOKEN.REFRESH_TOKEN_EXPIRE_IN')));
         Passport::refreshTokensExpireIn(now()->addDays(config('constants.TOKEN.REFRESH_TOKEN_EXPIRE_IN')));
+    
+        // register exceptions
+        $this->app->singleton(
+            ExceptionHandler::class,
+            HandlerException::class
+        );
     }
 
     /**
@@ -54,7 +64,7 @@ class UserServiceProvider extends AuthServiceProvider
      */
     public function register()
     {
-    
+        $this->app->bind(UserRepository::class, UserRepositoryEloquent::class);
     }
 
     private function publishMigrations()
