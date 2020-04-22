@@ -2,6 +2,7 @@
     "name": "nguyennd/laravel-users",
     "description": "A package which provides API manager users",
     "type": "library",
+    "license": "MIT",
     "authors": [
         {
             "name": "Nguyen Duy Nguyen",
