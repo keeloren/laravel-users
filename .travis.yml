@@ -1,0 +1,35 @@
+dist: bionic
+cache:
+  directories:
+    - $COMPOSER_CACHE_DIR
+    - $HOME/.composer/cache
+    - vendor
+# env:
+#   DOCKER_COMPOSE_VERSION: 1.4.2
+sudo: required
+services:
+  - mysql
+language: php
+php:
+  - '7.3'
+before_script:
+  - mysql -e 'CREATE DATABASE dbtest;'
+  - cp .env.example .env
+  - composer install
+  - composer dump-autoload --no-scripts
+  - php artisan key:generate
+  - php artisan migrate
+  - sed -i 's|name="DB_HOST" value="dbtest"|name="DB_HOST" value="127.0.0.1"|g' phpunit.xml
+  - sed -i 's|name="DB_DATABASE" value="dbtest"|name="DB_DATABASE" value="dbtest"|g' phpunit.xml
+  - sed -i 's|name="DB_USERNAME" value="dbuser"|name="DB_USERNAME" value="root"|g' phpunit.xml
+  - sed -i 's|name="DB_PASSWORD" value="user123"|name="DB_PASSWORD" value=""|g' phpunit.xml
+  - php artisan db:seed
+script:
+  - vendor/bin/phpunit
+#notifications:
+  #slack:
+  #  rooms:
+  #    - testnoti-workspace:kN37GQFQJ7MqqpH0YTCw8W9d#develop
+  # email:
+  #   recipients:
+  #     - keezimin@gmail.com
