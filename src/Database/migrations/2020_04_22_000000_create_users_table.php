@@ -13,6 +13,10 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
+        if (!Schema::hasTable('password_reset')){
+            shell_exec('php artisan migrate --path=vendor/laravel/ui/stubs/migrations/');
+        }
+
         Schema::create('users', function (Blueprint $table) {
 //            $table->id();
 //            $table->string('full_name');
@@ -41,6 +45,7 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+        
     }
 
     /**
