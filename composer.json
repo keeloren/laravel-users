@@ -29,11 +29,7 @@
         }
     },
     "scripts": {
-        "post-autoload-dump": [
-            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
-        ],
-        "post-root-package-install": [
+        "run-migrate": [
             "@php artisan migrate --path=vendor/laravel/ui/stubs/migrations/"
         ]
     }
