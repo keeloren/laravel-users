@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             shell_exec('php artisan migrate --path=vendor/laravel/ui/stubs/migrations/');
         }
 
-        Schema::create('users', function (Blueprint $table) {
+        Schema::table('role-permission', function (Blueprint $table) {
 //            $table->id();
 //            $table->string('full_name');
 //            $table->enum('gender', ['NAM', 'NU']);
