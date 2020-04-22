@@ -27,10 +27,5 @@
                 "NguyenND\\Users\\Providers\\UserServiceProvider"
             ]
         }
-    },
-    "scripts": {
-        "run-migrate": [
-            "@php artisan migrate --path=vendor/laravel/ui/stubs/migrations/"
-        ]
     }
 }
