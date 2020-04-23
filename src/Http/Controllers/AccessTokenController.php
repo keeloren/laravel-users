@@ -32,7 +32,6 @@ class AccessTokenController extends ATController
         } catch (ModelNotFoundException $e) {
             // email notfound
             if ($e instanceof ModelNotFoundException) {
-//                return response(['error' => 'Invalid_credentials', 'message' => 'User does not exist. Please try again'], 404);
                 return $this->error('Invalid_credentials', 'User does not exist. Please try again', 401);
             }
         } catch (OAuthServerException $e) {
