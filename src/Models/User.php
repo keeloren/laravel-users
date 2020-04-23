@@ -3,15 +3,19 @@
 namespace NguyenND\Users\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
-use Illuminate\Contracts\Auth\CanResetPassword;
-
-class User extends Authenticatable implements CanResetPassword
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Prettus\Repository\Contracts\Transformable;
+use Prettus\Repository\Traits\TransformableTrait;
+use Prettus\Repository\Contracts\Presentable;
+use Prettus\Repository\Traits\PresentableTrait;
+use Illuminate\Auth\Passwords\CanResetPassword
+;
+class User extends Authenticatable implements Transformable, Presentable, CanResetPasswordContract
 {
-    use Notifiable, HasApiTokens;
+    use Notifiable, HasApiTokens, TransformableTrait, PresentableTrait, CanResetPassword;
     /**
      * The attributes that are mass assignable.
      *

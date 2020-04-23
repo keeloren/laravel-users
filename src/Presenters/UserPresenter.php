@@ -2,7 +2,7 @@
 
 namespace NguyenND\Users\Presenters;
 
-use App\Transformers\UserTransformer;
+use NguyenND\Users\Transformers\UserTransformer;
 use Prettus\Repository\Presenter\FractalPresenter;
 
 /**
