@@ -12,7 +12,6 @@ use NguyenND\Users\Transformers\BaseTransformer;
  */
 class UserTransformer extends BaseTransformer
 {
-    protected $availableIncludes = ['roles', 'audios'];
     
     /**
      * Transform the User entity.
@@ -24,7 +23,7 @@ class UserTransformer extends BaseTransformer
     public function transform(User $model)
     {
         return [
-            'id'          => (int)$model->id,
+            'id'          => (int) $model->id,
             'name'        => $model->name,
             'created_at'  => $model->created_at,
             'updated_at'  => $model->updated_at

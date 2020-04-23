@@ -34,6 +34,7 @@ class UserServiceProvider extends AuthServiceProvider
         $this->mergeConfigFrom(
             __DIR__.'/../Config/constants.php', 'constants'
         );
+        $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'laravel-users');
         $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'lang');
         if ($this->app->runningInConsole()) {
             $this->loadMigrationsFrom(__DIR__ . '/../Database/migrations');
@@ -41,11 +42,9 @@ class UserServiceProvider extends AuthServiceProvider
         }
 
         $this->registerPolicies();
-
         // set auth config system
         $setDriver = Config::set('auth.guards.api.driver','passport');
         $setProviders = Config::set('auth.providers.users.model', User::class);
-
         Passport::routes();
         Passport::tokensExpireIn(now()->addDays(config('constants.TOKEN.REFRESH_TOKEN_EXPIRE_IN')));
         Passport::refreshTokensExpireIn(now()->addDays(config('constants.TOKEN.REFRESH_TOKEN_EXPIRE_IN')));

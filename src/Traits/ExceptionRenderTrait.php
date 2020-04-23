@@ -23,7 +23,7 @@ trait ExceptionRenderTrait
             'status' => $e instanceof HttpException ? $e->getStatusCode() : config('constants.HTTP_STATUS_CODE.SERVER_ERROR'),
             'title' => trans('lang::messages.common.occurError'),
             'errors' => [[
-                'title' => trans('lang::lang::messages.common.serverError'),
+                'title' => trans('lang::messages.common.serverError'),
                 'detail' => $e->getMessage()?:('An exception of '.get_class($e)),
             ]]
         ];
