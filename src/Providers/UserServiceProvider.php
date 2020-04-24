@@ -42,9 +42,12 @@ class UserServiceProvider extends AuthServiceProvider
         }
 
         $this->registerPolicies();
+
         // set auth config system
         $setDriver = Config::set('auth.guards.api.driver','passport');
         $setProviders = Config::set('auth.providers.users.model', User::class);
+        $setConfigRepository = Config::set('repository.fractal.serializer', 'League\Fractal\Serializer\JsonApiSerializer');
+
         Passport::routes();
         Passport::tokensExpireIn(now()->addDays(config('constants.TOKEN.REFRESH_TOKEN_EXPIRE_IN')));
         Passport::refreshTokensExpireIn(now()->addDays(config('constants.TOKEN.REFRESH_TOKEN_EXPIRE_IN')));
