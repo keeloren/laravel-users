@@ -12,7 +12,6 @@ use NguyenND\Users\Transformers\BaseTransformer;
  */
 class UserTransformer extends BaseTransformer
 {
-    
     /**
      * Transform the User entity.
      *
