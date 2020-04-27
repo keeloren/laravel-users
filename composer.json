@@ -19,11 +19,17 @@
         "prettus/l5-repository": "^2.6"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.5"
+        "phpunit/phpunit": "^8.5",
+        "orchestra/testbench": "^5.1"
     },
     "autoload": {
         "psr-4": {
             "NguyenND\\Users\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "NguyenND\\Users\\Test\\": "Tests"
         }
     },
     "extra": {
