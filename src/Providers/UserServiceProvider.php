@@ -30,6 +30,7 @@ class UserServiceProvider extends AuthServiceProvider
      */
     public function boot()
     {
+        $this->loadFactoriesFrom(__DIR__.'/../Database/factories');
         $this->loadRoutesFrom(__DIR__.'/../Routes/route.php');
         $this->mergeConfigFrom(
             __DIR__.'/../Config/constants.php', 'constants'

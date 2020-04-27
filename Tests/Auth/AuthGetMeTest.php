@@ -2,13 +2,13 @@
 
 namespace Tests\Feature\Auth;
 
-use Tests\TestCase1;
+use NguyenND\Users\Test\TestCaseBase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class AuthGetMeTest1 extends TestCase1
+class AuthGetMeTest extends TestCaseBase
 {
-    public function tearDown()
+    public function tearDown() : void
     {
         \Mockery::close();
         parent::tearDown();
@@ -21,7 +21,7 @@ class AuthGetMeTest1 extends TestCase1
      */
     public function testGetMeFail()
     {
-        $res = $this->getJson('/api/me', []);
+        $res = $this->getJson('/api/users/me', []);
         $res->assertStatus(401);
     }
     
@@ -34,7 +34,7 @@ class AuthGetMeTest1 extends TestCase1
     {
         $user       = $this->getUser();
         $token      = $this->getToken($user->toArray());
-        $res        = $this->getJson('/api/me', ['HTTP_Authorization' => "Bearer $token"]);
+        $res        = $this->getJson('/api/users/me', ['HTTP_Authorization' => "Bearer $token"]);
         $res->assertStatus(200);
         $res->assertJsonStructure([
             'status',

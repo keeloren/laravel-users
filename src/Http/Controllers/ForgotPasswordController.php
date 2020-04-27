@@ -46,7 +46,7 @@ class ForgotPasswordController extends BaseController
         $urlClient    = $domainClient . '/' . $token;
 
         try {
-            Mail::to($email, $name)->send(new ResetPassword(compact('name', 'urlClient')));
+//            Mail::to($email, $name)->send(new ResetPassword(compact('name', 'urlClient')));
         } catch (\Exception $e) {
             return $this->error(trans('lang::messages.auth.resetPasswordFail'), $e->getMessage(), config('constants.HTTP_STATUS_CODE.SERVER_ERROR'));
         }

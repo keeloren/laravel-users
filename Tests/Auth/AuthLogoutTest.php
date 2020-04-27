@@ -4,11 +4,11 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase1;
+use NguyenND\Users\Test\TestCaseBase;
 
-class AuthLogoutTest1 extends TestCase1
+class AuthLogoutTest extends TestCaseBase
 {
-    public function tearDown()
+    public function tearDown() : void
     {
         \Mockery::close();
         parent::tearDown();
@@ -21,7 +21,7 @@ class AuthLogoutTest1 extends TestCase1
      */
     public function testLogoutFail()
     {
-        $res = $this->postJson('/api/logout', []);
+        $res = $this->postJson('/api/users/logout', []);
         $res->assertStatus(401);
     }
 
@@ -34,7 +34,7 @@ class AuthLogoutTest1 extends TestCase1
     {
         $user  = $this->getUser()->toArray();
         $token = $this->getToken($user);
-        $res   = $this->postJson('/api/logout', [], ['HTTP_Authorization' => "Bearer $token"]);
+        $res   = $this->postJson('/api/users/logout', [], ['HTTP_Authorization' => "Bearer $token"]);
         $res->assertStatus(200);
         $res->assertJsonStructure([
             'status',

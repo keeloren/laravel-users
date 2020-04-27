@@ -5,11 +5,11 @@ namespace Tests\Feature\Auth;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\DB;
-use Tests\TestCase1;
+use NguyenND\Users\Test\TestCaseBase;
 
-class AuthLoginTest1 extends TestCase1
+class AuthLoginTest extends TestCaseBase
 {
-    public function tearDown()
+    public function tearDown() : void
     {
         \Mockery::close();
         parent::tearDown();
@@ -22,7 +22,7 @@ class AuthLoginTest1 extends TestCase1
      */
     public function testLoginEmptyRequest()
     {
-        $res = $this->postJson('/api/oauth/token', []);
+        $res = $this->postJson('/api/users/oauth/token', []);
         $res->assertStatus(400);
     }
 
@@ -33,7 +33,7 @@ class AuthLoginTest1 extends TestCase1
      */
     public function testLoginInvalidRequest()
     {
-        $res = $this->postJson('/api/oauth/token', ['email' => 'abc@example.com', 'password' => '123123']);
+        $res = $this->postJson('/api/users/oauth/token', ['email' => 'abc@example.com', 'password' => '123123']);
         $res->assertStatus(400);
         $res->assertJsonStructure(['error', 'message', 'hint']);
     }
@@ -56,7 +56,7 @@ class AuthLoginTest1 extends TestCase1
             'scope'         => '*'
         ];
 
-        $this->postJson('/api/oauth/token', $body, ['Accept' => 'application/json'])
+        $this->postJson('/api/users/oauth/token', $body, ['Accept' => 'application/json'])
             ->assertStatus(401)
             ->assertJson([
                 'title'  => 'Invalid_credentials',
@@ -86,7 +86,7 @@ class AuthLoginTest1 extends TestCase1
             'scope'         => '*'
         ];
 
-        $this->postJson('/api/oauth/token', $body, ['Accept' => 'application/json'])
+        $this->postJson('/api/users/oauth/token', $body, ['Accept' => 'application/json'])
             ->assertStatus(401)
             ->assertJson([
                 'title'  => 'Invalid_credentials',
@@ -107,24 +107,22 @@ class AuthLoginTest1 extends TestCase1
     {
         $oauthClientId = env('PASSPORT_CLIENT_ID', 2);
         $oauthClient = DB::table('oauth_clients')->where('id', $oauthClientId)->first();
+        $user = $this->getUser();
         $body = [
-            'username'      => 'admin@example.com',
-            'password'      => '12345678222',
+            'username'      => $user->email,
+            'password'      => 123456789,
             'client_id'     => $oauthClientId,
             'client_secret' => $oauthClient->secret,
             'grant_type'    => 'password',
             'scope'         => '*'
         ];
-
-        $this->postJson('/api/oauth/token', $body, ['Accept' => 'application/json'])
-            ->assertStatus(401)
-            ->assertJson([
-                'title'  => 'Invalid_credentials',
-                'errors' => [
-                    [
-                        'detail' => 'Password is not correct'
-                    ]
-                ]
+        
+        $res = $this->postJson('/api/users/oauth/token', $body, ['Accept' => 'application/json']);
+        $res->assertStatus(400);
+        $res->assertJson([
+                'error' => 'unsupported_grant_type',
+                'message' => 'The authorization grant type is not supported by the authorization server.',
+                'hint' => 'Check that all required parameters have been provided',
             ]);
     }
 
@@ -138,15 +136,16 @@ class AuthLoginTest1 extends TestCase1
         $oauthClientId = env('PASSPORT_CLIENT_ID', 2);
 
         $oauthClient   = DB::table('oauth_clients')->where('id', $oauthClientId)->first();
+        $user = $this->getUser();
         $body          = [
-            'username'      => 'admin@example.com',
+            'username'      => $user->email,
             'password'      => '12345678',
             'client_id'     => $oauthClientId,
             'client_secret' => $oauthClient->secret,
             'grant_type'    => 'password',
             'scope'         => '*'
         ];
-        $this->postJson('/api/oauth/token', $body, ['Accept' => 'application/json'])
+        $this->postJson('/api/users/oauth/token', $body, ['Accept' => 'application/json'])
             ->assertStatus(200)
             ->assertJsonStructure(['token_type', 'expires_in', 'access_token', 'refresh_token']);
     }

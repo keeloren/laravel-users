@@ -1,14 +1,15 @@
 <?php
 
-namespace  NguyenND\Users\Tests\Feature\Auth;
+namespace Tests\Feature\Auth;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase1;
+use NguyenND\Users\Test\TestCaseBase;
+use Symfony\Component\VarDumper\Dumper\DataDumperInterface;
 
-class AuthForgotPasswordTest1 extends TestCase1
+class AuthForgotPasswordTest extends TestCaseBase
 {
-    public function tearDown()
+    public function tearDown() : void
     {
         \Mockery::close();
         parent::tearDown();
@@ -22,7 +23,7 @@ class AuthForgotPasswordTest1 extends TestCase1
     public function testForgotPasswordEmptyRequest()
     {
         $payload = [];
-        $res     = $this->postJson('/api/password/forgot/request', $payload);
+        $res     = $this->postJson('/api/users/password/forgot/request', $payload);
         $res->assertStatus(400);
         $res->assertJson([
             'title'  => 'Validation Error.',
@@ -44,7 +45,7 @@ class AuthForgotPasswordTest1 extends TestCase1
         $payload = [
             'email' => 'example'
         ];
-        $res = $this->postJson('/api/password/forgot/request', $payload);
+        $res = $this->postJson('/api/users/password/forgot/request', $payload);
         $res->assertStatus(400);
         $res->assertJson([
             'title'  => 'Validation Error.',
@@ -66,7 +67,7 @@ class AuthForgotPasswordTest1 extends TestCase1
         $payload = [
             'email' => 'example@gmail.com'
         ];
-        $res = $this->postJson('/api/password/forgot/request', $payload);
+        $res = $this->postJson('/api/users/password/forgot/request', $payload);
         $res->assertStatus(400);
         $res->assertJson([
             'title'  => 'Validation Error.',
@@ -89,10 +90,10 @@ class AuthForgotPasswordTest1 extends TestCase1
         $payload = [
             'email' => $user->email
         ];
-        $res = $this->postJson('/api/password/forgot/request', $payload);
+        $res = $this->postJson('/api/users/password/forgot/request', $payload);
         $res->assertStatus(200);
         $res->assertJson([
-            'title' => trans('messages.auth.resetPasswordSuccess')
+            'title' => trans('lang::messages.auth.sendLinkResetPasswordSuccess')
         ]);
     }
 }

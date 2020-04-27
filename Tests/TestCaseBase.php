@@ -1,19 +1,29 @@
 <?php
 
-namespace Tests;
+namespace NguyenND\Users\Test;
 
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use NguyenND\Users\Models\User;
-use Auth;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use NguyenND\Users\Providers\UserServiceProvider;
+use Tests\CreatesApplication;
+use Orchestra\Testbench\TestCase as TestCaseOrchestra;
+use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-
-abstract class TestCase1 extends BaseTestCase
+class TestCaseBase extends TestCase
 {
     use CreatesApplication;
     use DatabaseMigrations;
     use DatabaseTransactions;
-
+    
+    public function setUp(): void
+    {
+        parent::setUp();
+        \Artisan::call('migrate', ['-vvv' => true]);
+        \Artisan::call('passport:install', ['-vvv' => true]);
+    }
+    
     /**
      * Get token
      *
@@ -32,7 +42,7 @@ abstract class TestCase1 extends BaseTestCase
         $token    = $objToken->accessToken;
         return $token;
     }
-
+    
     /**
      * Get User
      *
@@ -40,13 +50,12 @@ abstract class TestCase1 extends BaseTestCase
      *
      * @return \App\Models\User
      */
-    public function getUser($role = null)
+    public function getUser()
     {
         $user = factory(User::class)->create();
-        $role && $user->attachRole(Role::firstOrCreate(['name' => $role]));
         return $user;
     }
-
+    
     /**
      * Get attributes field of response
      *
@@ -59,7 +68,7 @@ abstract class TestCase1 extends BaseTestCase
         $data = json_decode($res->getContent());
         return $data->data->attributes ?? [];
     }
-
+    
     /**
      * Get Id of response
      *
