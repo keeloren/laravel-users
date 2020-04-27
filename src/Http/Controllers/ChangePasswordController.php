@@ -38,6 +38,7 @@ class ChangePasswordController extends BaseController
         if (!Hash::check($request->current_password, $user->password)) {
             return $this->error(trans('lang::messages.auth.changePasswordFail'), trans('lang::messages.auth.currentPasswordNotMatch'), config('constants.HTTP_STATUS_CODE.BAD_REQUEST'));
         }
+
         $this->userRepository->update(['password' => Hash::make($request->password)], Auth::id());
         $user->token()->revoke();
         $objToken          = $user->createToken('name');
